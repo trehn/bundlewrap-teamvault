@@ -85,7 +85,7 @@ def _file(secret_id=None, site=None):
         return "TEAMVAULT DUMMY CONTENT"
     else:
         secret = _fetch_secret(site, secret_id)
-        return b64decode(secret['data']['file'])
+        return b64decode(secret['data']['file']).decode('utf-8')
 
 
 def file(secret_id, site="default"):
