@@ -3,7 +3,7 @@ from setuptools import setup
 
 setup(
     name="bundlewrap-teamvault",
-    version="1.0.0",
+    version="2.0.0",
     description="Access TeamVault secrets from BundleWrap",
     author="Torsten Rehn",
     author_email="torsten@rehn.email",
@@ -12,7 +12,6 @@ setup(
     keywords=["configuration", "config", "management"],
     classifiers=[
         "Development Status :: 5 - Production/Stable",
-        "Environment :: Console",
         "Intended Audience :: System Administrators",
         "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
         "Natural Language :: English",
@@ -21,6 +20,7 @@ setup(
         "Programming Language :: Python :: 2.7",
         "Programming Language :: Python :: 3.3",
         "Programming Language :: Python :: 3.4",
+        "Topic :: Software Development :: Libraries :: Python Modules",
         "Topic :: System :: Installation/Setup",
         "Topic :: System :: Systems Administration",
     ],

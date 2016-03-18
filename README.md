@@ -25,7 +25,7 @@ import bwtv as teamvault
 nodes = {
     "node1": {
         'metadata': {
-            'secret': teamvault.Password("ABCDEF", site="foocorp"),
+            'secret': teamvault.password("ABCDEF", site="foocorp"),
         },
     },
 }
