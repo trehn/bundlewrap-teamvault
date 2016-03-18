@@ -149,7 +149,7 @@ PasswordCryptSHA512 = password_crypt_sha512
 @fault_callback
 def username(secret_id=None, site=None):
     if DUMMY_MODE:
-        return "TEAMVAULT_DUMMY_CONTENT"
+        return "teamvault_dummy_content"
     else:
         secret = _fetch_secret(site, secret_id)
         return secret['username']
