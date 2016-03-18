@@ -29,12 +29,6 @@ except:
     ))
 
 
-def fault_callback(callback):
-    def wrapped(secret_id, site="default"):
-        return Fault(callback, secret_id=secret_id, site=site)
-    return wrapped
-
-
 def _fetch_secret(site, secret_id):
     try:
         return cache[site][secret_id]
@@ -86,28 +80,36 @@ def _fetch_secret(site, secret_id):
     return secret
 
 
-@fault_callback
-def file(secret_id=None, site=None):
+def _file(secret_id=None, site=None):
     if DUMMY_MODE:
-        return b"TEAMVAULT DUMMY CONTENT"
+        return "TEAMVAULT DUMMY CONTENT"
     else:
         secret = _fetch_secret(site, secret_id)
         return b64decode(secret['data']['file'])
+
+
+def file(secret_id, site="default"):
+    return Fault(_file, secret_id=secret_id, site=site)
+
 File = file
 
 
-@fault_callback
-def file_as_base64(secret_id=None, site=None):
+def _file_as_base64(secret_id=None, site=None):
     if DUMMY_MODE:
         return "TEAMVAULT DUMMY CONTENT"
     else:
         secret = _fetch_secret(site, secret_id)
         return secret['data']['file']
+
+
+def file_as_base64(secret_id, site="default"):
+    return Fault(_file_as_base64, secret_id=secret_id, site=site)
+
+
 FileBase64 = file_as_base64
 
 
-@fault_callback
-def htpasswd_entry(secret_id=None, site=None):
+def _htpasswd_entry(secret_id=None, site=None):
     if DUMMY_MODE:
         return "TEAMVAULT:DUMMYCONTENT"
     else:
@@ -119,21 +121,29 @@ def htpasswd_entry(secret_id=None, site=None):
                 salt=sha512(secret_id.encode('utf-8')).hexdigest()[:8],
             ),
         )
+
+
+def htpasswd_entry(secret_id, site="default"):
+    return Fault(_htpasswd_entry, secret_id=secret_id, site=site)
+
 HtpasswdEntry = htpasswd_entry
 
 
-@fault_callback
-def password(secret_id=None, site=None):
+def _password(secret_id=None, site=None):
     if DUMMY_MODE:
         return "TEAMVAULT_DUMMY_CONTENT"
     else:
         secret = _fetch_secret(site, secret_id)
         return secret['data']['password']
+
+
+def password(secret_id, site="default"):
+    return Fault(_password, secret_id=secret_id, site=site)
+
 Password = password
 
 
-@fault_callback
-def password_crypt_sha512(secret_id=None, site=None):
+def _password_crypt_sha512(secret_id=None, site=None):
     if DUMMY_MODE:
         return "TEAMVAULT_DUMMY_CONTENT"
     else:
@@ -143,16 +153,25 @@ def password_crypt_sha512(secret_id=None, site=None):
             salt=sha512(secret_id.encode('utf-8')).hexdigest()[:16],
             rounds=5000,
         )
+
+
+def password_crypt_sha512(secret_id, site="default"):
+    return Fault(_password_crypt_sha512, secret_id=secret_id, site=site)
+
 PasswordCryptSHA512 = password_crypt_sha512
 
 
-@fault_callback
-def username(secret_id=None, site=None):
+def _username(secret_id=None, site=None):
     if DUMMY_MODE:
         return "teamvault_dummy_content"
     else:
         secret = _fetch_secret(site, secret_id)
         return secret['username']
+
+
+def username(secret_id, site="default"):
+    return Fault(_username, secret_id=secret_id, site=site)
+
 Username = username
 
 
