@@ -25,7 +25,7 @@ setup(
         "Topic :: System :: Systems Administration",
     ],
     install_requires=[
-        "bundlewrap >= 2.0.0",
+        "bundlewrap >= 2.3.1",
         "passlib",
         "requests >= 1.0.0",
     ],
