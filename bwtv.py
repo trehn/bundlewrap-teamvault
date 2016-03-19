@@ -4,7 +4,7 @@ try:
 except ImportError:  # Python 2
     from ConfigParser import SafeConfigParser, NoSectionError, NoOptionError
 from hashlib import sha512
-from os import environ
+from os import environ, getpid
 from os.path import expanduser
 
 from bundlewrap.exceptions import FaultUnavailable
@@ -27,7 +27,7 @@ except:
         path=CONFIG_PATH,
         x=yellow("!"),
     ))
-session = Session()
+sessions = {}
 
 
 def _fetch_secret(site, secret_id):
@@ -35,6 +35,8 @@ def _fetch_secret(site, secret_id):
         return cache[site][secret_id]
     except KeyError:
         pass
+
+    session = sessions.setdefault(getpid(), Session())
 
     try:
         full_url = "{}/api/secrets/{}/".format(
