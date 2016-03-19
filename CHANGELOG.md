@@ -1,3 +1,8 @@
+# 2.0.1
+
+* keep HTTP connections alive
+
+
 # 2.0.0
 
 * API changes
