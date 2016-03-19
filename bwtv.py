@@ -12,7 +12,7 @@ from bundlewrap.utils import Fault
 from bundlewrap.utils.text import yellow
 from bundlewrap.utils.ui import io
 from passlib.hash import apr_md5_crypt, sha512_crypt
-from requests import get
+from requests import Session
 
 
 CONFIG_PATH = expanduser("~/.bw_teamvault_secrets.cfg")
@@ -27,6 +27,7 @@ except:
         path=CONFIG_PATH,
         x=yellow("!"),
     ))
+session = Session()
 
 
 def _fetch_secret(site, secret_id):
@@ -54,7 +55,7 @@ def _fetch_secret(site, secret_id):
             ),
         )
 
-    response = get(full_url, auth=credentials)
+    response = session.get(full_url, auth=credentials)
     if response.status_code != 200:
         raise FaultUnavailable(
             "TeamVault returned {status} for {url}".format(
@@ -64,7 +65,7 @@ def _fetch_secret(site, secret_id):
         )
     secret = response.json()
 
-    response = get(secret['current_revision'] + "data", auth=credentials)
+    response = session.get(secret['current_revision'] + "data", auth=credentials)
     if response.status_code != 200:
         raise FaultUnavailable(
             "TeamVault returned {status} for {url}".format(
