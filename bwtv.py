@@ -5,7 +5,7 @@ except ImportError:  # Python 2
     from ConfigParser import SafeConfigParser, NoSectionError, NoOptionError
 from hashlib import sha512
 from os import environ, getpid
-from os.path import expanduser
+from os.path import expanduser, isfile
 
 from bundlewrap.exceptions import FaultUnavailable
 from bundlewrap.utils import Fault
@@ -14,8 +14,12 @@ from bundlewrap.utils.ui import io
 from passlib.hash import apr_md5_crypt, sha512_crypt
 from requests import Session
 
+CONFIG_PATH = ''
+config_locations = [expanduser("~/.bw_teamvault_secrets.cfg"), ".bw_teamvault_secrets.cfg"]
+for config_location in config_locations:
+    if isfile(config_location):
+        CONFIG_PATH = config_location
 
-CONFIG_PATH = expanduser("~/.bw_teamvault_secrets.cfg")
 DUMMY_MODE = environ.get("BW_TEAMVAULT_DUMMY_MODE", "0") == "1"
 
 cache = {}
