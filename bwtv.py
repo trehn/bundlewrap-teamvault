@@ -14,8 +14,7 @@ from bundlewrap.utils.ui import io
 from passlib.hash import apr_md5_crypt, sha512_crypt
 from requests import Session
 
-
-CONFIG_PATH = expanduser("~/.bw_teamvault_secrets.cfg")
+CONFIG_PATH = expanduser(environ.get("BW_TEAMVAULT_SECRET_FILE", "~/.bw_teamvault_secrets.cfg"))
 DUMMY_MODE = environ.get("BW_TEAMVAULT_DUMMY_MODE", "0") == "1"
 
 cache = {}

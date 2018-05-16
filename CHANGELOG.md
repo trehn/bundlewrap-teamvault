@@ -1,3 +1,9 @@
+# 2.1.0
+
+2018-05-15
+
+* get path to secrets.cfg from env
+
 # 2.0.1
 
 2016-03-19
