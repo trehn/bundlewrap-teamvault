@@ -15,7 +15,7 @@ from passlib.hash import apr_md5_crypt, sha512_crypt
 from requests import Session
 
 
-CONFIG_PATH = expanduser("~/.bw_teamvault_secrets.cfg")
+CONFIG_PATH = expanduser(environ.get("TEAMVAULT_SECRET"))
 DUMMY_MODE = environ.get("BW_TEAMVAULT_DUMMY_MODE", "0") == "1"
 
 cache = {}
