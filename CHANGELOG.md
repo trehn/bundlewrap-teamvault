@@ -1,8 +1,10 @@
 # 2.1.0
 
-2018-05-15
+2018-05-16
 
-* get path to secrets.cfg from env
+* path to config file can now be overridden using env var BW_TEAMVAULT_SECRETS_FILE
+* fetching secrets is now shown in `bw` progress line
+
 
 # 2.0.1
 
