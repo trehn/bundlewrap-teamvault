@@ -9,7 +9,7 @@ from os.path import expanduser
 
 from bundlewrap.exceptions import FaultUnavailable
 from bundlewrap.utils import Fault
-from bundlewrap.utils.text import yellow
+from bundlewrap.utils.text import bold, mark_for_translation as _, yellow
 from bundlewrap.utils.ui import io
 from passlib.hash import apr_md5_crypt, sha512_crypt
 from requests import Session
@@ -56,7 +56,8 @@ def _fetch_secret(site, secret_id):
             ),
         )
 
-    response = session.get(full_url, auth=credentials)
+    with io.job(_("{tv}  fetching {secret}").format(tv=bold("TeamVault"), secret=secret_id)):
+        response = session.get(full_url, auth=credentials)
     if response.status_code != 200:
         raise FaultUnavailable(
             "TeamVault returned {status} for {url}".format(
