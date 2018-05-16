@@ -35,4 +35,4 @@ Note: This will insert a proxy object into your metadata, the actual secret is n
 
 ---
 
-© 2016 [Torsten Rehn](mailto:torsten@rehn.email)
+© 2016-2018 [Torsten Rehn](mailto:torsten@rehn.email)
