@@ -72,7 +72,7 @@ def _fetch_secret(site, secret_id):
         raise FaultUnavailable(
             "TeamVault returned {status} for {url}".format(
                 status=response.status_code,
-                url=full_url,
+                url=secret['current_revision'] + "data",
             )
         )
 
