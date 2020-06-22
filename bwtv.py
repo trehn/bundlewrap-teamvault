@@ -1,8 +1,5 @@
 from base64 import b64decode
-try:
-    from configparser import SafeConfigParser, NoSectionError, NoOptionError
-except ImportError:  # Python 2
-    from ConfigParser import SafeConfigParser, NoSectionError, NoOptionError
+from configparser import ConfigParser, NoSectionError, NoOptionError
 from hashlib import sha512
 from os import environ, getpid
 from os.path import expanduser
@@ -18,7 +15,7 @@ CONFIG_PATH = expanduser(environ.get("BW_TEAMVAULT_SECRETS_FILE", "~/.bw_teamvau
 DUMMY_MODE = environ.get("BW_TEAMVAULT_DUMMY_MODE", "0") == "1"
 
 cache = {}
-config = SafeConfigParser()
+config = ConfigParser()
 try:
     config.read([CONFIG_PATH])
 except:
