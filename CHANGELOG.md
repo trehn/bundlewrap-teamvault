@@ -1,3 +1,11 @@
+# 3.0.0
+
+2020-06-22
+
+* added compatibility with BundleWrap >=4
+* removed compatibility with Python <3.6
+
+
 # 2.1.0
 
 2018-05-16
