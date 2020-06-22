@@ -92,7 +92,7 @@ def _file(secret_id=None, site=None):
 
 
 def file(secret_id, site="default"):
-    return Fault(_file, secret_id=secret_id, site=site)
+    return Fault("bwtv file", _file, secret_id=secret_id, site=site)
 
 
 def _file_as_base64(secret_id=None, site=None):
@@ -104,7 +104,12 @@ def _file_as_base64(secret_id=None, site=None):
 
 
 def file_as_base64(secret_id, site="default"):
-    return Fault(_file_as_base64, secret_id=secret_id, site=site)
+    return Fault(
+        "bwtv file_as_base64",
+        _file_as_base64,
+        secret_id=secret_id,
+        site=site,
+    )
 
 
 def _htpasswd_entry(secret_id=None, site=None):
@@ -122,7 +127,12 @@ def _htpasswd_entry(secret_id=None, site=None):
 
 
 def htpasswd_entry(secret_id, site="default"):
-    return Fault(_htpasswd_entry, secret_id=secret_id, site=site)
+    return Fault(
+        "bwtv htpasswd_entry",
+        _htpasswd_entry,
+        secret_id=secret_id,
+        site=site,
+    )
 
 
 def _password(secret_id=None, site=None):
@@ -134,7 +144,7 @@ def _password(secret_id=None, site=None):
 
 
 def password(secret_id, site="default"):
-    return Fault(_password, secret_id=secret_id, site=site)
+    return Fault("bwtv password", _password, secret_id=secret_id, site=site)
 
 
 def _password_crypt_sha512(secret_id=None, site=None):
@@ -150,7 +160,12 @@ def _password_crypt_sha512(secret_id=None, site=None):
 
 
 def password_crypt_sha512(secret_id, site="default"):
-    return Fault(_password_crypt_sha512, secret_id=secret_id, site=site)
+    return Fault(
+        "bwtv password_crypt_sha512",
+        _password_crypt_sha512,
+        secret_id=secret_id,
+        site=site,
+    )
 
 
 def _username(secret_id=None, site=None):
@@ -162,7 +177,7 @@ def _username(secret_id=None, site=None):
 
 
 def username(secret_id, site="default"):
-    return Fault(_username, secret_id=secret_id, site=site)
+    return Fault("bwtv username", _username, secret_id=secret_id, site=site)
 
 
 def _format(fault=None, format_string=None):
@@ -171,6 +186,7 @@ def _format(fault=None, format_string=None):
 
 def format(fault, format_string):
     return Fault(
+        "bwtv format",
         _format,
         fault=fault,
         format_string=format_string,
