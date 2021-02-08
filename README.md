@@ -13,7 +13,16 @@ Add this to your `~/.bw_teamvault_secrets.cfg`:
 url = https://teamvault.example.com
 username = jdoe
 password = potato
+pass_command = pass show teamvault
 ```
+
+`pass_command` will be executed by bundlewrap-teamvault. It will then use
+the first line of stdout as your teamvault password. This allows you to
+store your password securely in your password manager, instead of keeping
+it in plaintext in your home.
+
+Please note that setting `password` will take preference. If both options
+are set, `pass_command` will not be executed.
 
 # Usage
 
