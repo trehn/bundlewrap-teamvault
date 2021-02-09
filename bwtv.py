@@ -12,6 +12,7 @@ from bundlewrap.utils.ui import io
 from passlib.hash import apr_md5_crypt, sha512_crypt
 from requests import Session
 
+
 CONFIG_PATH = expanduser(environ.get("BW_TEAMVAULT_SECRETS_FILE", "~/.bw_teamvault_secrets.cfg"))
 DUMMY_MODE = environ.get("BW_TEAMVAULT_DUMMY_MODE", "0") == "1"
 
@@ -28,8 +29,8 @@ sessions = {}
 
 for site_name, site_config in config.items():
     if (
-        ('password' not in site_config or not site_config['password']) and \
-        'pass_command' in site_config
+        ('password' not in site_config or not site_config['password'])
+        and 'pass_command' in site_config
     ):
         try:
             config[site_name]['password'] = check_output(
