@@ -11,6 +11,7 @@ from bundlewrap.utils.text import bold, mark_for_translation as _, yellow
 from bundlewrap.utils.ui import io
 from passlib.hash import apr_md5_crypt, sha512_crypt
 from requests import Session
+from requests.exceptions import RequestException
 
 
 CONFIG_PATH = expanduser(environ.get("BW_TEAMVAULT_SECRETS_FILE", "~/.bw_teamvault_secrets.cfg"))
@@ -72,8 +73,17 @@ def _fetch_secret(site, secret_id):
             ),
         )
 
-    with io.job(_("{tv}  fetching {secret}").format(tv=bold("TeamVault"), secret=secret_id)):
-        response = session.get(full_url, auth=credentials)
+    try:
+        with io.job(_("{tv}  fetching {secret}").format(tv=bold("TeamVault"), secret=secret_id)):
+            response = session.get(full_url, auth=credentials)
+    except RequestException as e:
+        raise FaultUnavailable(
+            "Exception while getting secret {secret} from TeamVault: {exc}".format(
+                secret=secret_id,
+                exc=repr(e),
+            )
+        )
+
     if response.status_code != 200:
         raise FaultUnavailable(
             "TeamVault returned {status} for {url}".format(
