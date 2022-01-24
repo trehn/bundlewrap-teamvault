@@ -3,7 +3,7 @@ from setuptools import setup
 
 setup(
     name="bundlewrap-teamvault",
-    version="3.1.0",
+    version="3.1.1",
     description="Access TeamVault secrets from BundleWrap",
     author="Torsten Rehn",
     author_email="torsten@rehn.email",

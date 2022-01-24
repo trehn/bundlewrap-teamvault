@@ -1,3 +1,10 @@
+# 3.1.1
+
+2022-01-14
+
+* fixed connection errors not being raised as FaultUnavailable
+
+
 # 3.1.0
 
 2021-02-09
