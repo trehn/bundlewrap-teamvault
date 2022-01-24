@@ -21,7 +21,7 @@ cache = {}
 config = ConfigParser()
 try:
     config.read([CONFIG_PATH])
-except:
+except Exception:
     io.stderr("{x} WARNING: Unable to read TeamVault config at {path}".format(
         path=CONFIG_PATH,
         x=yellow("!"),
