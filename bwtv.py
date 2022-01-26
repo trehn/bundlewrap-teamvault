@@ -33,17 +33,18 @@ for site_name, site_config in config.items():
         ('password' not in site_config or not site_config['password'])
         and 'pass_command' in site_config
     ):
-        try:
-            config[site_name]['password'] = check_output(
-                site_config['pass_command'],
-                shell=True
-            ).decode('UTF-8').splitlines()[0].strip()
-        except (FileNotFoundError, CalledProcessError, IndexError) as e:
-            io.stderr("{x} TeamVault pass_command for site {site} failed: {e}".format(
-                x=yellow('!'),
-                site=site_name,
-                e=repr(e)
-            ))
+        if not DUMMY_MODE:
+            try:
+                config[site_name]['password'] = check_output(
+                    site_config['pass_command'],
+                    shell=True
+                ).decode('UTF-8').splitlines()[0].strip()
+            except (FileNotFoundError, CalledProcessError, IndexError) as e:
+                io.stderr("{x} TeamVault pass_command for site {site} failed: {e}".format(
+                    x=yellow('!'),
+                    site=site_name,
+                    e=repr(e)
+                ))
 
 
 def _fetch_secret(site, secret_id):
