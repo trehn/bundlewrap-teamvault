@@ -27,23 +27,7 @@ except Exception:
         x=yellow("!"),
     ))
 sessions = {}
-
-for site_name, site_config in config.items():
-    if (
-        ('password' not in site_config or not site_config['password'])
-        and 'pass_command' in site_config
-    ):
-        try:
-            config[site_name]['password'] = check_output(
-                site_config['pass_command'],
-                shell=True
-            ).decode('UTF-8').splitlines()[0].strip()
-        except (FileNotFoundError, CalledProcessError, IndexError) as e:
-            io.stderr("{x} TeamVault pass_command for site {site} failed: {e}".format(
-                x=yellow('!'),
-                site=site_name,
-                e=repr(e)
-            ))
+cached_credentials = {}
 
 
 def _fetch_secret(site, secret_id):
@@ -59,10 +43,32 @@ def _fetch_secret(site, secret_id):
             config.get(site, "url"),
             secret_id,
         )
-        credentials = (
-            config.get(site, "username"),
-            config.get(site, "password"),
-        )
+
+        if site not in cached_credentials:
+            if (
+                'password' not in config[site] or not config[site]['password']
+                and 'pass_command' in config[site]
+            ):
+                try:
+                    password = check_output(
+                        config[site]['pass_command'],
+                        shell=True
+                    ).decode('UTF-8').splitlines()[0].strip()
+                except (FileNotFoundError, CalledProcessError, IndexError) as e:
+                    # To avoid trying to get the password over and over.
+                    cached_credentials[site] = None
+
+                    raise FaultUnavailable from e
+                else:
+                    cached_credentials[site] = (
+                        config.get(site, 'username'),
+                        password,
+                    )
+            else:
+                cached_credentials[site] = (
+                    config.get(site, "username"),
+                    config.get(site, "password"),
+                )
     except (NoSectionError, NoOptionError):
         raise FaultUnavailable(
             "Tried to get TeamVault secret with ID '{secret_id}' "
@@ -73,9 +79,16 @@ def _fetch_secret(site, secret_id):
             ),
         )
 
+    if cached_credentials[site] is None:
+        raise FaultUnavailable(
+            "Getting credentials for {site} failed in earlier try".format(
+                site=site,
+            ),
+        )
+
     try:
         with io.job(_("{tv}  fetching {secret}").format(tv=bold("TeamVault"), secret=secret_id)):
-            response = session.get(full_url, auth=credentials)
+            response = session.get(full_url, auth=cached_credentials[site])
     except RequestException as e:
         raise FaultUnavailable(
             "Exception while getting secret {secret} from TeamVault: {exc}".format(
