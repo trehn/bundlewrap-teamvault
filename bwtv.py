@@ -107,7 +107,7 @@ def _fetch_secret(site, secret_id):
     secret = response.json()
 
     try:
-        response = session.get(secret['current_revision'] + "data", auth=credentials)
+        response = session.get(secret['current_revision'] + "data", auth=cached_credentials[site])
     except RequestException as e:
         raise FaultUnavailable(
             "Exception while getting secret {secret} from TeamVault: {exc}".format(
