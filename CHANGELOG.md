@@ -1,3 +1,10 @@
+# 3.1.2
+
+2022-07-11
+
+* fixed premature execution of `pass_command`
+
+
 # 3.1.1
 
 2022-01-14
