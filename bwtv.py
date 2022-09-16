@@ -50,10 +50,11 @@ def _fetch_secret(site, secret_id):
                 and 'pass_command' in config[site]
             ):
                 try:
-                    password = check_output(
-                        config[site]['pass_command'],
-                        shell=True
-                    ).decode('UTF-8').splitlines()[0].strip()
+                    with io.job(_("{tv}  running pass_command for site {site}").format(tv=bold("TeamVault"), site=site)):
+                        password = check_output(
+                            config[site]['pass_command'],
+                            shell=True
+                        ).decode('UTF-8').splitlines()[0].strip()
                 except (FileNotFoundError, CalledProcessError, IndexError) as e:
                     # To avoid trying to get the password over and over.
                     cached_credentials[site] = None
