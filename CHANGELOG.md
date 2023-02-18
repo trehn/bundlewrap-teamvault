@@ -1,3 +1,10 @@
+# 3.1.3
+
+2023-02-18
+
+* improved logging for unavailable secrets
+
+
 # 3.1.2
 
 2022-07-11
