@@ -1,4 +1,4 @@
-Pull secrets from [TeamVault](https://github.com/trehn/teamvault) into your [BundleWrap](http://bundlewrap.org) repo.
+Pull secrets from [TeamVault](https://github.com/seibert-media/teamvault) into your [BundleWrap](http://bundlewrap.org) repo.
 
 # Installation
 
@@ -44,4 +44,4 @@ Note: This will insert a proxy object into your metadata, the actual secret is n
 
 ---
 
-© 2016-2018 [Torsten Rehn](mailto:torsten@rehn.email)
+© 2016-2023 [Torsten Rehn](mailto:torsten@rehn.email)
