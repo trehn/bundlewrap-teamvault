@@ -100,8 +100,9 @@ def _fetch_secret(site, secret_id):
 
     if response.status_code != 200:
         raise FaultUnavailable(
-            "TeamVault returned {status} for {url}".format(
+            "TeamVault returned {status} for secret {secret} with url {url}".format(
                 status=response.status_code,
+                secret=secret_id,
                 url=full_url,
             )
         )
@@ -119,8 +120,9 @@ def _fetch_secret(site, secret_id):
 
     if response.status_code != 200:
         raise FaultUnavailable(
-            "TeamVault returned {status} for {url}".format(
+            "TeamVault returned {status} for secret {secret} with url {url}".format(
                 status=response.status_code,
+                secret=secret_id,
                 url=secret['current_revision'] + "data",
             )
         )
