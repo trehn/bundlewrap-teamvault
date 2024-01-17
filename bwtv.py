@@ -30,23 +30,15 @@ sessions = {}
 cached_credentials = {}
 
 
-def _fetch_secret(site, secret_id):
+class BWTVCredentialsError(Exception):
+    pass
+
+
+def load_site_credentials(site):
     try:
-        return cache[site][secret_id]
-    except KeyError:
-        pass
-
-    session = sessions.setdefault(getpid(), Session())
-
-    try:
-        full_url = "{}/api/secrets/{}/".format(
-            config.get(site, "url"),
-            secret_id,
-        )
-
         if site not in cached_credentials:
             if (
-                'password' not in config[site] or not config[site]['password']
+                ('password' not in config[site] or not config[site]['password'])
                 and 'pass_command' in config[site]
             ):
                 try:
@@ -70,7 +62,31 @@ def _fetch_secret(site, secret_id):
                     config.get(site, "username"),
                     config.get(site, "password"),
                 )
-    except (NoSectionError, NoOptionError):
+    except (KeyError, NoSectionError, NoOptionError):
+        raise BWTVCredentialsError(
+            "Could not find TeamVault credentials for '{site}' in {path}".format(
+                path=CONFIG_PATH,
+                site=site,
+            )
+        )
+
+
+def _fetch_secret(site, secret_id):
+    try:
+        return cache[site][secret_id]
+    except KeyError:
+        pass
+
+    session = sessions.setdefault(getpid(), Session())
+
+    full_url = "{}/api/secrets/{}/".format(
+        config.get(site, "url"),
+        secret_id,
+    )
+
+    try:
+        load_site_credentials(site)
+    except BWTVCredentialsError:
         raise FaultUnavailable(
             "Tried to get TeamVault secret with ID '{secret_id}' "
             "from site '{site}', but credentials missing in {path}".format(
