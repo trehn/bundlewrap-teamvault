@@ -1,3 +1,10 @@
+# 3.1.4
+
+2024-02-23
+
+* refactor credential loading so other code can access it
+
+
 # 3.1.3
 
 2023-02-18
