@@ -54,11 +54,13 @@ def load_site_credentials(site):
                     raise FaultUnavailable from e
                 else:
                     cached_credentials[site] = (
+                        config.get(site, "url"),
                         config.get(site, 'username'),
                         password,
                     )
             else:
                 cached_credentials[site] = (
+                    config.get(site, "url"),
                     config.get(site, "username"),
                     config.get(site, "password"),
                 )
@@ -79,11 +81,6 @@ def _fetch_secret(site, secret_id):
 
     session = sessions.setdefault(getpid(), Session())
 
-    full_url = "{}/api/secrets/{}/".format(
-        config.get(site, "url"),
-        secret_id,
-    )
-
     try:
         load_site_credentials(site)
     except BWTVCredentialsError:
@@ -103,9 +100,14 @@ def _fetch_secret(site, secret_id):
             ),
         )
 
+    full_url = "{}/api/secrets/{}/".format(
+        cached_credentials[site][0],
+        secret_id,
+    )
+
     try:
         with io.job(_("{tv}  fetching {secret}").format(tv=bold("TeamVault"), secret=secret_id)):
-            response = session.get(full_url, auth=cached_credentials[site])
+            response = session.get(full_url, auth=cached_credentials[site][1:3])
     except RequestException as e:
         raise FaultUnavailable(
             "Exception while getting secret {secret} from TeamVault: {exc}".format(
@@ -125,7 +127,7 @@ def _fetch_secret(site, secret_id):
     secret = response.json()
 
     try:
-        response = session.get(secret['current_revision'] + "data", auth=cached_credentials[site])
+        response = session.get(secret['current_revision'] + "data", auth=cached_credentials[site][1:3])
     except RequestException as e:
         raise FaultUnavailable(
             "Exception while getting secret {secret} from TeamVault: {exc}".format(
