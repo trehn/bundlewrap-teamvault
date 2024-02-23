@@ -1,3 +1,9 @@
+# 3.1.5
+
+2024-02-23
+
+* fixed NoSectionError for site url not being wrappted into FaultUnavailable
+
 # 3.1.4
 
 2024-02-23
